@@ -8,11 +8,12 @@ services:
 
 before_install:
   - docker build -t docker-react -f Dockerfile.dev .
+  - docker build -t docker-react-build .
   - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
 
 script:
   - docker run docker-react npm run test -- --coverage
-  - docker tag docker-react registry.heroku.com/$HEROKU_APP_NAME/web
+  - docker tag docker-react-build registry.heroku.com/$HEROKU_APP_NAME/web
 
 deploy:
   provider: script
